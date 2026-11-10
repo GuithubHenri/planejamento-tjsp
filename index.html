@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#0f172a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <title>Planejamento Lei Seca TJSP 2026/2027 — Cloud Sync</title>
+  <title>Planejamento Lei Seca TJSP 2026/2027 — Estudo por Ciclos</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
   <style>
@@ -56,7 +56,7 @@
           Painel Estratégico de Lei Seca — Escrevente TJSP
         </h1>
         <p class="text-xs sm:text-sm text-[#94a3b8]">
-          Rotação Semanal Equilibrada: Você estuda e avança em <strong>todos os Direitos toda semana</strong> até 31/12/2026.
+          Estudo Flexível por Ciclos: Avance no seu ritmo girando <strong>todas as matérias de Direito em cada ciclo</strong>.
         </p>
       </div>
 
@@ -90,29 +90,26 @@
         </div>
 
         <p class="text-xs text-[#94a3b8] leading-relaxed">
-          Como o GitHub Pages é um servidor estático, o navegador usa a sua própria conta do GitHub (**Gist Privado**) como banco de dados gratuito na nuvem! Ao conectar seu Token uma única vez no Notebook e no Android, **qualquer check marcado em um aparelho atualiza automaticamente no outro em tempo real**.
+          Seus checks e suas <strong>Observações/Anotações</strong> de leitura ficam salvos na nuvem da sua conta GitHub (**Gist Privado**). Qualquer alteração no Android ou no Notebook atualiza automaticamente no outro dispositivo!
         </p>
 
         <div class="space-y-3 text-xs">
           <div>
-            <label class="block font-semibold text-white mb-1">1. Seu GitHub Personal Access Token (com permissão `gist` ou `repo`):</label>
+            <label class="block font-semibold text-white mb-1">1. Seu GitHub Personal Access Token:</label>
             <input
               id="gh-token-input"
               type="password"
               placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
               class="w-full px-3 py-2 rounded-lg bg-[#0f172a] border border-[#334155] text-white focus:outline-none"
             />
-            <p class="text-[#94a3b8] mt-1">
-              Crie em 15 segundos em: <a href="https://github.com/settings/tokens/new?description=TJSP_Cloud_Sync&scopes=gist,repo" target="_blank" class="text-blue-400 underline">github.com/settings/tokens/new</a> (marque a caixinha <strong>gist</strong> e clique em Generate Token).
-            </p>
           </div>
 
           <div>
-            <label class="block font-semibold text-white mb-1">2. ID da Nuvem (Gist ID) — Deixe em branco no 1º aparelho para criar automaticamente:</label>
+            <label class="block font-semibold text-white mb-1">2. ID da Nuvem (Gist ID):</label>
             <input
               id="gh-gist-input"
               type="text"
-              placeholder="Gerado automaticamente no 1º uso (ou cole aqui no 2º aparelho)"
+              placeholder="Gerado automaticamente"
               class="w-full px-3 py-2 rounded-lg bg-[#0f172a] border border-[#334155] text-white focus:outline-none"
             />
           </div>
@@ -125,8 +122,51 @@
             🔄 Forçar Atualização Agora
           </button>
           <button onclick="saveCloudConfig()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-blue-600 text-white hover:bg-blue-500 transition">
-            💾 Conectar e Sincronizar em Tempo Real
+            💾 Conectar e Sincronizar
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Observation / Notes Pop-up Modal -->
+    <div id="note-modal" class="hidden fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+      <div class="bg-[#1e293b] border border-[#334155] rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-[#334155] pb-3">
+          <div>
+            <span id="note-modal-badge" class="text-xs font-semibold text-blue-400"></span>
+            <h3 id="note-modal-title" class="text-sm sm:text-base font-bold text-white mt-0.5">
+              Observações de Leitura
+            </h3>
+          </div>
+          <button onclick="closeNoteModal()" class="text-xs text-[#94a3b8] hover:text-white px-2.5 py-1 rounded border border-[#334155]">
+            Fechar ✕
+          </button>
+        </div>
+
+        <div class="space-y-2">
+          <label for="note-textarea" class="block text-xs font-medium text-[#94a3b8]">
+            Anote onde você parou (ex: <em>"Parei no Art. 15, ler até o 23 à noite"</em>) ou pontos importantes:
+          </label>
+          <textarea
+            id="note-textarea"
+            rows="5"
+            placeholder="Digite sua observação aqui... (ex: Parei no art. 315 / Revisar parágrafo único do art. 312)"
+            class="w-full p-3 rounded-xl bg-[#0f172a] border border-[#334155] text-xs sm:text-sm text-white focus:outline-none focus:border-blue-500 leading-relaxed"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t border-[#334155]">
+          <button onclick="clearCurrentNote()" class="px-3 py-2 rounded-lg text-xs font-medium text-rose-400 hover:bg-rose-500/10 transition">
+            🗑️ Limpar Observação
+          </button>
+          <div class="flex items-center gap-2">
+            <button onclick="closeNoteModal()" class="px-3.5 py-2 rounded-lg text-xs font-medium bg-[#334155] text-white hover:opacity-90 transition">
+              Cancelar
+            </button>
+            <button onclick="saveCurrentNote()" class="px-4 py-2 rounded-lg text-xs font-semibold bg-emerald-600 text-white hover:bg-emerald-500 transition">
+              💾 Salvar Observação
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -151,7 +191,7 @@
             1. Leitura Cirúrgica (30% do Tempo)
           </div>
           <p class="text-[#94a3b8]">
-            Dedique <strong>35 a 40 min/dia</strong> para ler a meta de artigos do dia antes das questões. Isso elimina o <strong>"ponto cego"</strong> (os ~40% de artigos inéditos ou normas novas como o <em>eproc</em> Res. 963/2025).
+            Dedique <strong>35 a 40 min por meta</strong> para ler os artigos do bloco antes das questões. Isso elimina o <strong>"ponto cego"</strong> (os ~40% de artigos inéditos ou normas novas como o <em>eproc</em> Res. 963/2025).
           </p>
           <div class="pt-1 space-y-1">
             <div class="font-semibold">Código de 3 Cores na Lei Seca:</div>
@@ -166,33 +206,26 @@
             2. Engenharia Reversa (70% do Tempo)
           </div>
           <p class="text-[#94a3b8]">
-            Logo após ler o bloco do dia (ou na sua bateria semanal), filtre <strong>15 a 25 questões da VUNESP</strong> exatamente sobre os artigos lidos.
+            Logo após ler o bloco (ou na sua bateria de questões do ciclo), filtre <strong>15 a 25 questões da VUNESP</strong> exatamente sobre os artigos lidos.
           </p>
           <ul class="list-disc list-inside space-y-1 text-[#94a3b8]">
-            <li>Marque o <strong>1º Check (Lei)</strong> assim que terminar a leitura ativa dos artigos do dia.</li>
-            <li>Marque o <strong>2º Check (Questões)</strong> quando validar aquele bloco no site de questões.</li>
-            <li>Errou uma questão? Volte na lei seca e faça um asterisco (*) ao lado do artigo cobrado!</li>
+            <li>Use o botão <strong>📝 Obs</strong> se precisar pausar a leitura no meio de um bloco para saber exatamente em qual artigo parou!</li>
+            <li>Marque o <strong>1º Check (Lei)</strong> ao concluir a leitura ativa do bloco.</li>
+            <li>Marque o <strong>2º Check (Questões)</strong> ao validar aquele bloco em questões.</li>
           </ul>
         </div>
 
         <div class="p-3.5 rounded-xl bg-[#0f172a] border border-[#334155] space-y-2">
           <div class="font-bold text-blue-400 uppercase tracking-wide">
-            3. Regra do Ciclo Semanal Rotativo
+            3. Estudo por Ciclos (Sem Dias Fixos)
           </div>
           <p class="text-[#94a3b8]">
-            Para você nunca ficar semanas sem ver uma matéria, seu cronograma gira <strong>todas as disciplinas dentro da mesma semana</strong>:
+            Você não está preso a dias da semana! O planejamento está dividido em <strong>8 Ciclos equilibrados</strong> (com 7 blocos por ciclo):
           </p>
-          <div class="grid grid-cols-2 gap-1 text-xs pt-1">
-            <div>📅 <strong>Terça:</strong> Dir. Penal / Const.</div>
-            <div>📅 <strong>Quarta:</strong> Processo Civil</div>
-            <div>📅 <strong>Quinta:</strong> Processo Penal</div>
-            <div>📅 <strong>Sexta:</strong> Dir. Administrativo</div>
-            <div>📅 <strong>Sábado:</strong> Leg. Interna (NSCGJ/Res)</div>
-            <div>📅 <strong>Dom/Seg:</strong> Proc. Civil + Penal/Const</div>
+          <div class="space-y-1 text-xs pt-1 text-[#94a3b8]">
+            <div>🔄 <strong>Dentro de cada Ciclo:</strong> Você passa por todas as matérias de Direito (Penal, Processo Civil, Processo Penal, Administrativo, Legislação Interna e Constitucional).</div>
+            <div>⚡ <strong>Liberdade total:</strong> Se em um dia você render mais, pode avançar 2 blocos do ciclo; se imprevistos acontecerem, basta abrir o botão <strong>📝 Obs</strong>, anotar onde parou e retomar de lá!</div>
           </div>
-          <p class="text-[#94a3b8] pt-1">
-            💡 <strong>Regimento Interno:</strong> Estudo seletivo focado nos Órgãos (Pleno, Órgão Especial, CSM) e Cúpula Diretiva.
-          </p>
         </div>
       </div>
     </div>
@@ -201,12 +234,12 @@
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
       <div class="bg-[#1e293b] border border-[#334155] rounded-xl p-3.5 sm:p-4 shadow-sm">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-medium text-[#94a3b8]">Metas Concluídas</span>
+          <span class="text-xs font-medium text-[#94a3b8]">Blocos Concluídos</span>
           <span id="kpi-blocks-pct" class="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/15 text-blue-400">0%</span>
         </div>
         <div class="mt-2 flex items-baseline gap-1.5">
           <span id="kpi-blocks-done" class="text-xl sm:text-2xl font-bold">0</span>
-          <span class="text-xs sm:text-sm text-[#94a3b8]">/ <span id="kpi-blocks-total">52</span> dias</span>
+          <span class="text-xs sm:text-sm text-[#94a3b8]">/ <span id="kpi-blocks-total">52</span> blocos</span>
         </div>
         <div class="w-full h-2 bg-[#334155] rounded-full mt-2.5 overflow-hidden">
           <div id="bar-blocks" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
@@ -229,15 +262,15 @@
 
       <div class="bg-[#1e293b] border border-[#334155] rounded-xl p-3.5 sm:p-4 shadow-sm">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-medium text-[#94a3b8]">Ritmo até 31/12</span>
-          <span class="text-xs font-bold px-2 py-0.5 rounded bg-purple-500/15 text-purple-400">Meta</span>
+          <span class="text-xs font-medium text-[#94a3b8]">Média por Bloco</span>
+          <span class="text-xs font-bold px-2 py-0.5 rounded bg-purple-500/15 text-purple-400">Ciclos</span>
         </div>
         <div class="mt-2 flex items-baseline gap-1.5">
           <span id="kpi-pace" class="text-xl sm:text-2xl font-bold">~25</span>
-          <span class="text-xs sm:text-sm text-[#94a3b8]">arts/dia</span>
+          <span class="text-xs sm:text-sm text-[#94a3b8]">arts/bloco</span>
         </div>
         <p class="text-xs text-[#94a3b8] mt-2 truncate">
-          ~35 min/dia de leitura ativa
+          ~35 min por bloco de leitura
         </p>
       </div>
 
@@ -268,15 +301,15 @@
     <div class="bg-[#1e293b] border border-[#334155] rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-3">
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
         <select id="filter-week" onchange="renderAll()" class="px-3 py-2 rounded-lg text-xs font-medium bg-[#0f172a] text-white border border-[#334155] focus:outline-none">
-          <option value="ALL">🗓️ Todas as Semanas (Ciclos 1 a 8)</option>
-          <option value="1">Semana 1 (10/11 a 16/11)</option>
-          <option value="2">Semana 2 (17/11 a 23/11)</option>
-          <option value="3">Semana 3 (24/11 a 30/11)</option>
-          <option value="4">Semana 4 (01/12 a 07/12)</option>
-          <option value="5">Semana 5 (08/12 a 14/12)</option>
-          <option value="6">Semana 6 (15/12 a 21/12)</option>
-          <option value="7">Semana 7 (22/12 a 28/12)</option>
-          <option value="8">Reta Final 2026 (29/12 a 31/12)</option>
+          <option value="ALL">🔄 Todos os Ciclos (Ciclos 1 a 8)</option>
+          <option value="1">Ciclo 1 (7 blocos)</option>
+          <option value="2">Ciclo 2 (7 blocos)</option>
+          <option value="3">Ciclo 3 (7 blocos)</option>
+          <option value="4">Ciclo 4 (7 blocos)</option>
+          <option value="5">Ciclo 5 (7 blocos)</option>
+          <option value="6">Ciclo 6 (7 blocos)</option>
+          <option value="7">Ciclo 7 (7 blocos)</option>
+          <option value="8">Ciclo 8 — Fechamento (3 blocos)</option>
         </select>
 
         <select id="filter-subject" onchange="renderAll()" class="px-3 py-2 rounded-lg text-xs font-medium bg-[#0f172a] text-white border border-[#334155] focus:outline-none">
@@ -295,6 +328,7 @@
           <option value="PENDING">⏳ Pendentes de Leitura</option>
           <option value="COMPLETED">✅ Leitura Concluída</option>
           <option value="NEEDS_QUESTIONS">🎯 Lido (Falta Bater Questões)</option>
+          <option value="HAS_NOTES">📝 Com Observação Salva</option>
         </select>
       </div>
 
@@ -303,7 +337,7 @@
           id="search-input"
           type="text"
           oninput="renderAll()"
-          placeholder="Buscar artigo, lei, tema (ex: art. 312, eproc, citação)..."
+          placeholder="Buscar artigo, lei, tema ou anotação..."
           class="w-full px-3.5 py-2 rounded-lg text-xs bg-[#0f172a] text-white border border-[#334155] focus:outline-none"
         />
       </div>
@@ -318,14 +352,13 @@
         <table class="w-full text-left border-collapse">
           <thead>
             <tr class="border-b border-[#334155] text-xs font-semibold text-[#94a3b8] bg-[#0f172a]">
-              <th class="py-3.5 px-3 text-center w-20">Ciclo / Dia</th>
-              <th class="py-3.5 px-3 w-40">Matéria / Norma</th>
+              <th class="py-3.5 px-4 w-44">Matéria / Norma</th>
               <th class="py-3.5 px-4">Artigos a Ler (Edital Verticalizado)</th>
               <th class="py-3.5 px-3">Foco Estratégico (Banca VUNESP)</th>
-              <th class="py-3.5 px-3 text-center w-20">Qtd. Arts</th>
-              <th class="py-3.5 px-3 text-center w-36">Data (A Ler)</th>
+              <th class="py-3.5 px-3 text-center w-24">Qtd. Arts</th>
+              <th class="py-3.5 px-3 text-center w-32">Observação</th>
               <th class="py-3.5 px-3 text-center w-24">Check Lei</th>
-              <th class="py-3.5 px-3 text-center w-24">Check Questões</th>
+              <th class="py-3.5 px-3 text-center w-28">Check Questões</th>
             </tr>
           </thead>
           <tbody id="schedule-tbody" class="divide-y divide-[#334155] text-xs"></tbody>
@@ -338,72 +371,72 @@
   <script>
     const SUBJECT_POOLS = {
       PENAL: [
-        { cat: "PENAL", catLabel: "Direito Penal", law: "Código Penal", articles: "Arts. 293 a 305; 307; 308; 311-A", topic: "Falsidade Documental, Falsa Identidade e Fraudes em Certames", count: 16, priority: "ALTA" },
-        { cat: "PENAL", catLabel: "Direito Penal", law: "Código Penal", articles: "Arts. 312 a 317; 319 a 327", topic: "Crimes Funcionais (Peculato, Concussão, Corrupção, Prevaricação, Conceito de Funcionário)", count: 16, priority: "ALTA" },
-        { cat: "PENAL", catLabel: "Direito Penal", law: "Código Penal", articles: "Arts. 328 a 333; 336 e 337; 339 a 347; 357 e 359", topic: "Crimes de Particulares e Crimes contra a Administração da Justiça", count: 19, priority: "ALTA" }
+        { cat: "PENAL", catLabel: "Direito Penal", law: "Código Penal", articles: "Arts. 293 a 305; 307; 308; 311-A", topic: "Falsidade Documental, Falsa Identidade e Fraudes em Certames", count: 16 },
+        { cat: "PENAL", catLabel: "Direito Penal", law: "Código Penal", articles: "Arts. 312 a 317; 319 a 327", topic: "Crimes Funcionais (Peculato, Concussão, Corrupção, Prevaricação, Conceito de Funcionário)", count: 16 },
+        { cat: "PENAL", catLabel: "Direito Penal", law: "Código Penal", articles: "Arts. 328 a 333; 336 e 337; 339 a 347; 357 e 359", topic: "Crimes de Particulares e Crimes contra a Administração da Justiça", count: 19 }
       ],
       CONSTITUCIONAL: [
-        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Art. 5º (Caput e Incisos I a XL)", topic: "Direitos e Deveres Individuais e Coletivos (Parte 1)", count: 1, priority: "ALTA" },
-        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Art. 5º (Incisos XLI a LXXIX e §§ 1º a 4º) + Arts. 6º a 11", topic: "Remédios Constitucionais, Garantias Processuais e Direitos Sociais", count: 7, priority: "ALTA" },
-        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Arts. 12 e 13; Arts. 37 e 38", topic: "Nacionalidade (Natos/Naturalizados) e Disposições Gerais da Administração Pública", count: 4, priority: "ALTA" },
-        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Arts. 39 a 41; e Art. 92", topic: "Servidores Públicos (Estabilidade, Acumulação, Aposentadoria) e Órgãos do Poder Judiciário", count: 4, priority: "ALTA" }
+        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Art. 5º (Caput e Incisos I a XL)", topic: "Direitos e Deveres Individuais e Coletivos (Parte 1)", count: 1 },
+        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Art. 5º (Incisos XLI a LXXIX e §§ 1º a 4º) + Arts. 6º a 11", topic: "Remédios Constitucionais, Garantias Processuais e Direitos Sociais", count: 7 },
+        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Arts. 12 e 13; Arts. 37 e 38", topic: "Nacionalidade (Natos/Naturalizados) e Disposições Gerais da Administração Pública", count: 4 },
+        { cat: "CONSTITUCIONAL", catLabel: "Direito Constitucional", law: "Constituição Federal", articles: "Arts. 39 a 41; e Art. 92", topic: "Servidores Públicos (Estabilidade, Acumulação, Aposentadoria) e Órgãos do Poder Judiciário", count: 4 }
       ],
       EPD: [
-        { cat: "EPD", catLabel: "Estatuto PCD (Bloco III)", law: "Lei Federal 13.146/2015", articles: "Arts. 1º ao 13; e Arts. 34 ao 38", topic: "Estatuto da Pessoa com Deficiência: Igualdade, Atendimento Prioritário e Direito ao Trabalho", count: 18, priority: "ALTA" }
+        { cat: "EPD", catLabel: "Estatuto PCD (Bloco III)", law: "Lei Federal 13.146/2015", articles: "Arts. 1º ao 13; e Arts. 34 ao 38", topic: "Estatuto da Pessoa com Deficiência: Igualdade, Atendimento Prioritário e Direito ao Trabalho", count: 18 }
       ],
       ADMINISTRATIVO: [
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 1º a 35", topic: "Estatuto TJSP: Provimento, Nomeação, Concurso, Posse e Exercício", count: 35, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 36 a 66", topic: "Estatuto TJSP: Fiança, Remoção, Substituição, Readaptação e Vacância", count: 31, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 67 a 86; e Arts. 171 a 175", topic: "Estatuto TJSP: Tempo de Serviço, Férias e Direito de Petição", count: 25, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 239 a 263", topic: "Estatuto TJSP: Deveres, Proibições, Acumulação, Responsabilidades e Penalidades", count: 25, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 264 a 290", topic: "Estatuto TJSP: Práticas Autocompositivas, Sindicância e Processo Administrativo (Parte 1)", count: 27, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 291 a 323", topic: "Estatuto TJSP: Processo por Abandono, Recursos e Revisão de PAD", count: 33, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Federal 8.429/92 (LIA)", articles: "Arts. 1º a 13", topic: "Improbidade Administrativa: Dolo, Atos (Arts. 9, 10, 11) e Sanções/Prazos (Art. 12)", count: 13, priority: "ALTA" },
-        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Federal 8.429/92 (LIA)", articles: "Arts. 14 a 25", topic: "Improbidade Administrativa: Procedimento Judicial, Indisponibilidade, ANPC e Prescrição (Art. 23)", count: 11, priority: "ALTA" }
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 1º a 35", topic: "Estatuto TJSP: Provimento, Nomeação, Concurso, Posse e Exercício", count: 35 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 36 a 66", topic: "Estatuto TJSP: Fiança, Remoção, Substituição, Readaptação e Vacância", count: 31 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 67 a 86; e Arts. 171 a 175", topic: "Estatuto TJSP: Tempo de Serviço, Férias e Direito de Petição", count: 25 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 239 a 263", topic: "Estatuto TJSP: Deveres, Proibições, Acumulação, Responsabilidades e Penalidades", count: 25 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 264 a 290", topic: "Estatuto TJSP: Práticas Autocompositivas, Sindicância e Processo Administrativo (Parte 1)", count: 27 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Estadual 10.261/68", articles: "Arts. 291 a 323", topic: "Estatuto TJSP: Processo por Abandono, Recursos e Revisão de PAD", count: 33 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Federal 8.429/92 (LIA)", articles: "Arts. 1º a 13", topic: "Improbidade Administrativa: Dolo, Atos (Arts. 9, 10, 11) e Sanções/Prazos (Art. 12)", count: 13 },
+        { cat: "ADMINISTRATIVO", catLabel: "Direito Administrativo", law: "Lei Federal 8.429/92 (LIA)", articles: "Arts. 14 a 25", topic: "Improbidade Administrativa: Procedimento Judicial, Indisponibilidade, ANPC e Prescrição (Art. 23)", count: 11 }
       ],
       PROC_PENAL: [
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 251 a 258; 261 a 267; 274", topic: "Juiz, MP, Acusado, Defensor e Funcionários da Justiça (Impedimentos e Suspeição)", count: 16, priority: "ALTA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 351 a 372", topic: "Citações (Real, Hora Certa, Edital) e Intimações no Processo Penal", count: 22, priority: "ALTA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 394 a 405", topic: "Instrução Criminal: Rito Ordinário, Sumário e Sumaríssimo, Rejeição e Absolvição Sumária", count: 14, priority: "ALTA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 406 a 438", topic: "Tribunal do Júri (1ª Fase - Pronúncia, Impronúncia, Absolvição Sumária, Desaforamento e Alistamento)", count: 33, priority: "MEDIA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 439 a 472", topic: "Tribunal do Júri (Sorteio, Conselho de Sentença, Impedimentos de Jurados e Instrução em Plenário)", count: 34, priority: "MEDIA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 473 a 497", topic: "Tribunal do Júri (Debates, Questionário, Votação, Sentença e Atribuições do Juiz Presidente)", count: 25, priority: "MEDIA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 531 a 538; 541 a 548; 574 a 592", topic: "Procedimento Sumário, Restauração de Autos, Teoria Geral dos Recursos e RESE", count: 35, priority: "ALTA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 593 a 638", topic: "Apelação, Embargos Infringentes/Declaração, Carta Testemunhável e Revisão Criminal", count: 43, priority: "ALTA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 639 a 667", topic: "Habeas Corpus e seu Processo no CPP", count: 29, priority: "ALTA" },
-        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Lei 9.099/95 (JECRIM)", articles: "Arts. 60 a 83; 88 e 89", topic: "Juizado Especial Criminal: Fase Preliminar, Transação Penal, Rito Sumaríssimo e SURSIS Processual", count: 26, priority: "ALTA" }
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 251 a 258; 261 a 267; 274", topic: "Juiz, MP, Acusado, Defensor e Funcionários da Justiça (Impedimentos e Suspeição)", count: 16 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 351 a 372", topic: "Citações (Real, Hora Certa, Edital) e Intimações no Processo Penal", count: 22 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 394 a 405", topic: "Instrução Criminal: Rito Ordinário, Sumário e Sumaríssimo, Rejeição e Absolvição Sumária", count: 14 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 406 a 438", topic: "Tribunal do Júri (1ª Fase - Pronúncia, Impronúncia, Absolvição Sumária, Desaforamento e Alistamento)", count: 33 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 439 a 472", topic: "Tribunal do Júri (Sorteio, Conselho de Sentença, Impedimentos de Jurados e Instrução em Plenário)", count: 34 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 473 a 497", topic: "Tribunal do Júri (Debates, Questionário, Votação, Sentença e Atribuições do Juiz Presidente)", count: 25 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 531 a 538; 541 a 548; 574 a 592", topic: "Procedimento Sumário, Restauração de Autos, Teoria Geral dos Recursos e RESE", count: 35 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 593 a 638", topic: "Apelação, Embargos Infringentes/Declaração, Carta Testemunhável e Revisão Criminal", count: 43 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Código de Processo Penal", articles: "Arts. 639 a 667", topic: "Habeas Corpus e seu Processo no CPP", count: 29 },
+        { cat: "PROC_PENAL", catLabel: "Processo Penal", law: "Lei 9.099/95 (JECRIM)", articles: "Arts. 60 a 83; 88 e 89", topic: "Juizado Especial Criminal: Fase Preliminar, Transação Penal, Rito Sumaríssimo e SURSIS Processual", count: 26 }
       ],
       PROC_CIVIL: [
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 144 a 155; e Arts. 188 a 202", topic: "Impedimento e Suspeição; Auxiliares da Justiça; Forma, Tempo e Lugar dos Atos Processuais", count: 27, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 203 a 235", topic: "Pronunciamentos do Juiz, Prazos Processuais (Contagem, Suspensão) e Verificação de Prazos", count: 33, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 236 a 275", topic: "Cartas, Citações (Meio Eletrônico, Correio, Oficial, Hora Certa, Edital) e Intimações", count: 40, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 294 a 311", topic: "Tutela Provisória: Urgência (Antecipada e Cautelar, Estabilização) e Tutela da Evidência", count: 18, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 318 a 346", topic: "Procedimento Comum: Petição Inicial, Improcedência Liminar, Audiência (Art. 334), Contestação e Revelia", count: 29, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 347 a 380", topic: "Saneamento, Julgamento Antecipado do Mérito, Audiência de Instrução e Teoria Geral das Provas", count: 34, priority: "MEDIA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 381 a 429", topic: "Produção Antecipada, Ata Notarial, Depoimento Pessoal, Confissão e Prova Documental", count: 49, priority: "MEDIA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 430 a 484", topic: "Arguição de Falsidade, Documentos Eletrônicos, Prova Testemunhal, Prova Pericial e Inspeção Judicial", count: 55, priority: "MEDIA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 485 a 512", topic: "Sentença (Sem e Com Resolução de Mérito), Remessa Necessária, Coisa Julgada e Liquidação", count: 28, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 513 a 538", topic: "Cumprimento de Sentença (Quantia Certa, Impugnação, Alimentos, Fazenda Pública e Obrigações)", count: 28, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 994 a 1026", topic: "Recursos: Disposições Gerais, Apelação, Agravo de Instrumento, Agravo Interno e Embargos de Declaração", count: 33, priority: "ALTA" },
-        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Leis 9.099/95 e 12.153/09", articles: "Lei 9.099 (Arts. 3º a 19) + Lei 12.153/09 (Arts. 1º a 29)", topic: "Juizado Especial Cível (Competência, Partes, Atos) e Juizado Especial da Fazenda Pública (Integral)", count: 46, priority: "ALTA" }
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 144 a 155; e Arts. 188 a 202", topic: "Impedimento e Suspeição; Auxiliares da Justiça; Forma, Tempo e Lugar dos Atos Processuais", count: 27 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 203 a 235", topic: "Pronunciamentos do Juiz, Prazos Processuais (Contagem, Suspensão) e Verificação de Prazos", count: 33 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 236 a 275", topic: "Cartas, Citações (Meio Eletrônico, Correio, Oficial, Hora Certa, Edital) e Intimações", count: 40 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 294 a 311", topic: "Tutela Provisória: Urgência (Antecipada e Cautelar, Estabilização) e Tutela da Evidência", count: 18 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 318 a 346", topic: "Procedimento Comum: Petição Inicial, Improcedência Liminar, Audiência (Art. 334), Contestação e Revelia", count: 29 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 347 a 380", topic: "Saneamento, Julgamento Antecipado do Mérito, Audiência de Instrução e Teoria Geral das Provas", count: 34 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 381 a 429", topic: "Produção Antecipada, Ata Notarial, Depoimento Pessoal, Confissão e Prova Documental", count: 49 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 430 a 484", topic: "Arguição de Falsidade, Documentos Eletrônicos, Prova Testemunhal, Prova Pericial e Inspeção Judicial", count: 55 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 485 a 512", topic: "Sentença (Sem e Com Resolução de Mérito), Remessa Necessária, Coisa Julgada e Liquidação", count: 28 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 513 a 538", topic: "Cumprimento de Sentença (Quantia Certa, Impugnação, Alimentos, Fazenda Pública e Obrigações)", count: 28 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Código de Processo Civil", articles: "Arts. 994 a 1026", topic: "Recursos: Disposições Gerais, Apelação, Agravo de Instrumento, Agravo Interno e Embargos de Declaração", count: 33 },
+        { cat: "PROC_CIVIL", catLabel: "Processo Civil", law: "Leis 9.099/95 e 12.153/09", articles: "Lei 9.099 (Arts. 3º a 19) + Lei 12.153/09 (Arts. 1º a 29)", topic: "Juizado Especial Cível (Competência, Partes, Atos) e Juizado Especial da Fazenda Pública (Integral)", count: 46 }
       ],
       INTERNA: [
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. II (Arts. 5º a 18) + Cap. III Seções I e II (Arts. 26 a 29)", topic: "Função Correcional (Correições, Apuração Preliminar, Sindicância, PAD) e Atribuições Gerais", count: 18, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. III Seções V, VI e VII (Arts. 46 a 86)", topic: "Sistema Informatizado Oficial, Livros e Classificadores Obrigatórios e Escrituração", count: 41, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. III Seção VIII Subs. I, II e III (Arts. 87 a 99) + Seções IX a XII (Arts. 103 a 131)", topic: "Ordem Geral dos Serviços, Autuação, Recebimento de Petições, Certidões e Mandados", count: 42, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. III Seções XIII a XIX (Arts. 132 a 189-G)", topic: "Ofícios, Cartas Precatórias, Intimações, Carga/Vista de Autos e Arquivamento de Processos", count: 58, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. XI Seções I a IV (Arts. 1.189 a 1.242)", topic: "Processo Eletrônico (Parte 1): Sistema Eletrônico, Peticionamento, Protocolo e Juntada Digital", count: 54, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. XI Seções V a VII (Arts. 1.243 a 1.301)", topic: "Processo Eletrônico (Parte 2): Atos Processuais Digitais, Mandados e Precatórios/RPV", count: 59, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Resolução TJSP 850/2021", articles: "Arts. 1º a 40 (Integral)", topic: "Regulamenta o Teletrabalho no âmbito do TJSP (Metas, Vedações, Prazos e Condições Especiais)", count: 40, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Resolução TJSP 963/2025", articles: "Arts. 1º a 43 (Integral)", topic: "NOVIDADE DO EDITAL: Governança e utilização do Sistema EPROC nas unidades do TJSP", count: 43, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Lei Complementar 1.111/2010", articles: "Arts. 1º a 46 (Integral)", topic: "NOVIDADE DO EDITAL: Plano de Cargos e Carreiras dos Servidores do TJSP", count: 46, priority: "ALTA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 1º a 55 (Leitura Seletiva / Alta Incidência)", topic: "Composição do Tribunal, Tribunal Pleno, Órgão Especial, Conselho Superior da Magistratura e Câmaras", count: 55, priority: "SELETIVA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 56 a 120 (Leitura Seletiva)", topic: "Atribuições da Cúpula Diretiva (Presidente, Vice, Corregedor Geral, Decano), Eleições e Comissões", count: 65, priority: "SELETIVA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 121 a 200 (Leitura Dinâmica / Mapeamento por Questões)", topic: "Sessões, Julgamentos, Quóruns Especiais e Distribuição no 2º Grau", count: 80, priority: "SELETIVA" },
-        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 201 a 290 (Leitura Dinâmica / Mapeamento por Questões)", topic: "Processos Originários, Recursos Regimentais, Reforma do Regimento e Disposições Finais", count: 90, priority: "SELETIVA" }
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. II (Arts. 5º a 18) + Cap. III Seções I e II (Arts. 26 a 29)", topic: "Função Correcional (Correições, Apuração Preliminar, Sindicância, PAD) e Atribuições Gerais", count: 18 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. III Seções V, VI e VII (Arts. 46 a 86)", topic: "Sistema Informatizado Oficial, Livros e Classificadores Obrigatórios e Escrituração", count: 41 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. III Seção VIII Subs. I, II e III (Arts. 87 a 99) + Seções IX a XII (Arts. 103 a 131)", topic: "Ordem Geral dos Serviços, Autuação, Recebimento de Petições, Certidões e Mandados", count: 42 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. III Seções XIII a XIX (Arts. 132 a 189-G)", topic: "Ofícios, Cartas Precatórias, Intimações, Carga/Vista de Autos e Arquivamento de Processos", count: 58 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. XI Seções I a IV (Arts. 1.189 a 1.242)", topic: "Processo Eletrônico (Parte 1): Sistema Eletrônico, Peticionamento, Protocolo e Juntada Digital", count: 54 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Normas da Corregedoria (NSCGJ)", articles: "Cap. XI Seções V a VII (Arts. 1.243 a 1.301)", topic: "Processo Eletrônico (Parte 2): Atos Processuais Digitais, Mandados e Precatórios/RPV", count: 59 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Resolução TJSP 850/2021", articles: "Arts. 1º a 40 (Integral)", topic: "Regulamenta o Teletrabalho no âmbito do TJSP (Metas, Vedações, Prazos e Condições Especiais)", count: 40 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Resolução TJSP 963/2025", articles: "Arts. 1º a 43 (Integral)", topic: "NOVIDADE DO EDITAL: Governança e utilização do Sistema EPROC nas unidades do TJSP", count: 43 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Lei Complementar 1.111/2010", articles: "Arts. 1º a 46 (Integral)", topic: "NOVIDADE DO EDITAL: Plano de Cargos e Carreiras dos Servidores do TJSP", count: 46 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 1º a 55", topic: "Composição do Tribunal, Tribunal Pleno, Órgão Especial, Conselho Superior da Magistratura e Câmaras", count: 55 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 56 a 120", topic: "Atribuições da Cúpula Diretiva (Presidente, Vice, Corregedor Geral, Decano), Eleições e Comissões", count: 65 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 121 a 200", topic: "Sessões, Julgamentos, Quóruns Especiais e Distribuição no 2º Grau", count: 80 },
+        { cat: "INTERNA", catLabel: "Legislação Interna", law: "Regimento Interno TJSP", articles: "Arts. 201 a 290", topic: "Processos Originários, Recursos Regimentais, Reforma do Regimento e Disposições Finais", count: 90 }
       ],
       REVISAO: [
-        { cat: "INTERNA", catLabel: "Revisão Geral 2026", law: "Fechamento da Meta Anual", articles: "Revisão de Artigos Grifados (Prazos + Competências + Penas)", topic: "Consolidação de 100% da Lei Seca lida em 2026 + Simulado Diagnóstico de Direito (30 questões VUNESP)", count: 0, priority: "ALTA" }
+        { cat: "INTERNA", catLabel: "Revisão Geral", law: "Fechamento dos Ciclos", articles: "Revisão de Artigos Grifados (Prazos + Competências + Penas)", topic: "Consolidação de 100% da Lei Seca lida + Simulado Diagnóstico de Direito (30 questões VUNESP)", count: 0 }
       ]
     };
 
@@ -420,35 +453,21 @@
 
     function buildRotatedBlocks() {
       const cursors = { PENAL: 0, CONSTITUCIONAL: 0, EPD: 0, ADMINISTRATIVO: 0, PROC_PENAL: 0, PROC_CIVIL: 0, INTERNA: 0, REVISAO: 0 };
-      const startDate = new Date("2026-11-10T12:00:00");
-      const weekDays = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
       return ROTATION_ORDER.map((poolKey, idx) => {
         const item = SUBJECT_POOLS[poolKey][cursors[poolKey]];
         cursors[poolKey]++;
-
-        const d = new Date(startDate);
-        d.setDate(startDate.getDate() + idx);
-        const yyyy = d.getFullYear();
-        const mm = String(d.getMonth() + 1).padStart(2, "0");
-        const dd = String(d.getDate()).padStart(2, "0");
-        const isoDate = `${yyyy}-${mm}-${dd}`;
-        const weekNum = Math.floor(idx / 7) + 1;
-        const dayOfWeek = weekDays[d.getDay()];
+        const cycleNum = Math.floor(idx / 7) + 1;
 
         return {
           id: idx + 1,
-          day: idx + 1,
-          week: weekNum,
-          dayOfWeek: dayOfWeek,
+          cycle: cycleNum,
           cat: item.cat,
           catLabel: item.catLabel,
           law: item.law,
           articles: item.articles,
           topic: item.topic,
-          count: item.count,
-          priority: item.priority,
-          defaultDate: isoDate
+          count: item.count
         };
       });
     }
@@ -459,16 +478,15 @@
     const DEFAULT_GIST_ID = "7689637f06933d026de00a8f52e9865a";
     let state = {};
     let cloudConfig = { token: "", gistId: DEFAULT_GIST_ID };
+    let activeNoteBlockId = null;
 
     function loadState() {
-      // Check URL params for magic 1-click setup (?sync=TOKEN)
       try {
         const urlParams = new URLSearchParams(window.location.search);
         const syncToken = urlParams.get("sync");
         if (syncToken) {
           cloudConfig = { token: syncToken.trim(), gistId: DEFAULT_GIST_ID };
           localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfig));
-          // Clean token from address bar for security
           window.history.replaceState({}, document.title, window.location.pathname);
         }
       } catch (e) {}
@@ -481,7 +499,9 @@
       }
       INITIAL_BLOCKS.forEach(b => {
         if (!state[b.id]) {
-          state[b.id] = { read: false, questions: false, date: b.defaultDate };
+          state[b.id] = { read: false, questions: false, note: "" };
+        } else if (typeof state[b.id].note === "undefined") {
+          state[b.id].note = "";
         }
       });
 
@@ -545,7 +565,6 @@
       updateCloudBadge("syncing", "Buscando dados da nuvem...");
       try {
         if (!cloudConfig.gistId) {
-          // Search existing gist named tjsp_progress.json
           const listRes = await fetch("https://api.github.com/gists", {
             headers: { "Authorization": `Bearer ${cloudConfig.token}`, "Accept": "application/vnd.github+json" }
           });
@@ -569,36 +588,19 @@
             if (file && file.content) {
               const parsed = JSON.parse(file.content);
               if (parsed.state) {
-                state = { ...state, ...parsed.state };
+                Object.keys(parsed.state).forEach(k => {
+                  state[k] = {
+                    read: !!(parsed.state[k] && parsed.state[k].read),
+                    questions: !!(parsed.state[k] && parsed.state[k].questions),
+                    note: (parsed.state[k] && parsed.state[k].note) ? parsed.state[k].note : ""
+                  };
+                });
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
                 updateDashboard();
                 renderAll();
               }
             }
             updateCloudBadge("connected", "☁️ Sincronizado em Tempo Real");
-            return;
-          }
-        } else {
-          // Create new Gist automatically
-          const createRes = await fetch("https://api.github.com/gists", {
-            method: "POST",
-            headers: { "Authorization": `Bearer ${cloudConfig.token}`, "Accept": "application/vnd.github+json" },
-            body: JSON.stringify({
-              description: "Planejamento Lei Seca TJSP 2026 - Cloud Sync",
-              public: false,
-              files: {
-                "tjsp_progress.json": {
-                  content: JSON.stringify({ updatedAt: new Date().toISOString(), state }, null, 2)
-                }
-              }
-            })
-          });
-          if (createRes.ok) {
-            const created = await createRes.json();
-            cloudConfig.gistId = created.id;
-            localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfig));
-            document.getElementById("gh-gist-input").value = created.id;
-            updateCloudBadge("connected", "☁️ Nuvem Criada e Sincronizada!");
             return;
           }
         }
@@ -620,17 +622,52 @@
 
     async function saveCloudConfig() {
       const token = document.getElementById("gh-token-input").value.trim();
-      const gistId = document.getElementById("gh-gist-input").value.trim();
+      const gistId = document.getElementById("gh-gist-input").value.trim() || DEFAULT_GIST_ID;
       cloudConfig = { token, gistId };
       localStorage.setItem(CLOUD_CONFIG_KEY, JSON.stringify(cloudConfig));
       await pullFromCloud();
       const fb = document.getElementById("cloud-feedback");
-      fb.textContent = "✅ Sincronização ativa! Basta colocar o mesmo Token no outro dispositivo que ele encontrará sua nuvem automaticamente.";
+      fb.textContent = "✅ Sincronização ativa em tempo real!";
       fb.classList.remove("hidden");
     }
 
     async function syncFromCloudNow() {
       await pullFromCloud();
+    }
+
+    // Observation Modal Functions
+    function openNoteModal(id) {
+      activeNoteBlockId = id;
+      const block = INITIAL_BLOCKS.find(b => b.id === id);
+      const st = state[id] || { note: "" };
+      document.getElementById("note-modal-badge").textContent = `Ciclo ${block.cycle} • ${block.catLabel} (${block.law})`;
+      document.getElementById("note-modal-title").textContent = block.articles;
+      document.getElementById("note-textarea").value = st.note || "";
+      document.getElementById("note-modal").classList.remove("hidden");
+      setTimeout(() => document.getElementById("note-textarea").focus(), 50);
+    }
+
+    function closeNoteModal() {
+      activeNoteBlockId = null;
+      document.getElementById("note-modal").classList.add("hidden");
+    }
+
+    function saveCurrentNote() {
+      if (!activeNoteBlockId) return;
+      const val = document.getElementById("note-textarea").value.trim();
+      state[activeNoteBlockId].note = val;
+      saveState();
+      renderAll();
+      closeNoteModal();
+    }
+
+    function clearCurrentNote() {
+      if (!activeNoteBlockId) return;
+      document.getElementById("note-textarea").value = "";
+      state[activeNoteBlockId].note = "";
+      saveState();
+      renderAll();
+      closeNoteModal();
     }
 
     function saveState() {
@@ -656,11 +693,6 @@
       state[id].questions = !state[id].questions;
       saveState();
       renderAll();
-    }
-
-    function updateDate(id, newDate) {
-      state[id].date = newDate;
-      saveState();
     }
 
     function exportProgress() {
@@ -738,8 +770,8 @@
       document.getElementById("kpi-rev-done").textContent = doneQuestions + " / " + totalBlocks;
 
       const remainingArts = Math.max(0, totalArts - doneArts);
-      const remainingDays = Math.max(1, totalBlocks - doneBlocks);
-      const pace = Math.ceil(remainingArts / remainingDays);
+      const remainingBlocks = Math.max(1, totalBlocks - doneBlocks);
+      const pace = Math.ceil(remainingArts / remainingBlocks);
       document.getElementById("kpi-pace").textContent = remainingArts === 0 ? "0" : "~" + pace;
 
       const subjectContainer = document.getElementById("subject-cards");
@@ -760,36 +792,56 @@
       }).join("");
     }
 
-    function getPriorityBadge(priority) {
-      if (priority === "ALTA") {
-        return `<span class="px-2 py-0.5 rounded text-xs font-semibold bg-rose-500/15 text-rose-400 border border-rose-500/30">Alta Incidência</span>`;
-      }
-      if (priority === "MEDIA") {
-        return `<span class="px-2 py-0.5 rounded text-xs font-semibold bg-blue-500/15 text-blue-400 border border-blue-500/30">Média</span>`;
-      }
-      return `<span class="px-2 py-0.5 rounded text-xs font-semibold bg-amber-500/15 text-amber-400 border border-amber-500/30">Leitura Seletiva</span>`;
-    }
-
     function getFilteredBlocks() {
-      const weekFilter = document.getElementById("filter-week").value;
+      const cycleFilter = document.getElementById("filter-week").value;
       const subFilter = document.getElementById("filter-subject").value;
-      const statusFilter = document.getElementByById ? document.getElementById("filter-status").value : "ALL";
+      const statusFilter = document.getElementById("filter-status").value;
       const query = document.getElementById("search-input").value.toLowerCase().trim();
 
       return INITIAL_BLOCKS.filter(b => {
         const st = state[b.id];
-        if (weekFilter !== "ALL" && String(b.week) !== weekFilter) return false;
+        const hasNote = !!(st.note && st.note.trim().length > 0);
+        if (cycleFilter !== "ALL" && String(b.cycle) !== cycleFilter) return false;
         if (subFilter !== "ALL" && b.cat !== subFilter) return false;
         if (statusFilter === "PENDING" && st.read) return false;
         if (statusFilter === "COMPLETED" && !st.read) return false;
         if (statusFilter === "NEEDS_QUESTIONS" && (!st.read || st.questions)) return false;
+        if (statusFilter === "HAS_NOTES" && !hasNote) return false;
 
         if (query) {
-          const hay = `${b.catLabel} ${b.law} ${b.articles} ${b.topic}`.toLowerCase();
+          const hay = `${b.catLabel} ${b.law} ${b.articles} ${b.topic} ${st.note || ""}`.toLowerCase();
           if (!hay.includes(query)) return false;
         }
         return true;
       });
+    }
+
+    function getNoteButtonHtml(id) {
+      const st = state[id];
+      const hasNote = !!(st && st.note && st.note.trim().length > 0);
+      if (hasNote) {
+        return `
+          <button
+            onclick="openNoteModal(${id})"
+            title="Clique para ler ou editar sua observação"
+            class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 transition inline-flex items-center gap-1.5"
+          >
+            <span>📝</span>
+            <span>Ver Obs</span>
+            <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          </button>
+        `;
+      }
+      return `
+        <button
+          onclick="openNoteModal(${id})"
+          title="Adicionar observação (ex: onde parei)"
+          class="px-2.5 py-1.5 rounded-lg text-xs font-medium bg-[#0f172a] text-[#94a3b8] border border-[#334155] hover:text-white hover:border-[#475569] transition inline-flex items-center gap-1"
+        >
+          <span>📝</span>
+          <span>+ Obs</span>
+        </button>
+      `;
     }
 
     function renderAll() {
@@ -799,7 +851,7 @@
 
       if (filtered.length === 0) {
         const emptyHtml = `<div class="py-8 text-center text-sm text-[#94a3b8] bg-[#1e293b] rounded-xl border border-[#334155]">Nenhuma meta encontrada para os filtros selecionados.</div>`;
-        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-sm text-[#94a3b8]">Nenhuma meta encontrada.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-sm text-[#94a3b8]">Nenhuma meta encontrada.</td></tr>`;
         mobileContainer.innerHTML = emptyHtml;
         return;
       }
@@ -811,33 +863,23 @@
 
         return `
           <tr class="${rowClass}">
-            <td class="py-3 px-3 text-center">
-              <div class="font-bold text-white">Dia #${b.day}</div>
-              <div class="text-xs text-[#94a3b8]">Sem ${b.week} • ${b.dayOfWeek}</div>
-            </td>
-            <td class="py-3 px-3">
+            <td class="py-3.5 px-4">
               <div class="font-semibold text-white">${b.catLabel}</div>
               <div class="text-xs text-[#94a3b8]">${b.law}</div>
             </td>
-            <td class="py-3 px-4">
+            <td class="py-3.5 px-4">
               <div class="${strikeClass}">${b.articles}</div>
-              <div class="mt-1 inline-block">${getPriorityBadge(b.priority)}</div>
             </td>
-            <td class="py-3 px-3 text-[#94a3b8] leading-relaxed">
+            <td class="py-3.5 px-3 text-[#94a3b8] leading-relaxed">
               ${b.topic}
             </td>
-            <td class="py-3 px-3 text-center font-semibold">
+            <td class="py-3.5 px-3 text-center font-semibold">
               ${b.count > 0 ? b.count + " arts" : "Revisão"}
             </td>
-            <td class="py-3 px-3 text-center">
-              <input
-                type="date"
-                value="${st.date}"
-                onchange="updateDate(${b.id}, this.value)"
-                class="px-2 py-1 rounded border border-[#334155] bg-[#0f172a] text-white text-xs focus:outline-none"
-              />
+            <td class="py-3.5 px-3 text-center">
+              ${getNoteButtonHtml(b.id)}
             </td>
-            <td class="py-3 px-3 text-center">
+            <td class="py-3.5 px-3 text-center">
               <input
                 type="checkbox"
                 ${st.read ? "checked" : ""}
@@ -845,7 +887,7 @@
                 title="Marcar leitura de Lei Seca concluída"
               />
             </td>
-            <td class="py-3 px-3 text-center">
+            <td class="py-3.5 px-3 text-center">
               <input
                 type="checkbox"
                 ${st.questions ? "checked" : ""}
@@ -864,24 +906,13 @@
 
         return `
           <div class="p-4 rounded-xl border ${cardBorder} shadow-sm space-y-2.5">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold px-2 py-0.5 rounded bg-[#0f172a] border border-[#334155]">
-                Dia #${b.day} • Sem ${b.week} (${b.dayOfWeek})
-              </span>
-              ${getPriorityBadge(b.priority)}
-            </div>
             <div>
               <div class="text-xs font-semibold text-blue-400">${b.catLabel} — ${b.law}</div>
               <div class="text-sm font-bold mt-0.5 ${strikeClass}">${b.articles}</div>
               <p class="text-xs text-[#94a3b8] mt-1">${b.topic}</p>
             </div>
-            <div class="pt-2 border-t border-[#334155] flex items-center justify-between gap-2 flex-wrap">
-              <input
-                type="date"
-                value="${st.date}"
-                onchange="updateDate(${b.id}, this.value)"
-                class="px-2 py-1 rounded border border-[#334155] bg-[#0f172a] text-white text-xs"
-              />
+            <div class="pt-2.5 border-t border-[#334155] flex items-center justify-between gap-2 flex-wrap">
+              ${getNoteButtonHtml(b.id)}
               <div class="flex items-center gap-4">
                 <label class="flex items-center gap-1.5 text-xs font-semibold cursor-pointer">
                   <input type="checkbox" ${st.read ? "checked" : ""} onchange="toggleRead(${b.id})" />
@@ -904,7 +935,6 @@
     if (cloudConfig.token) {
       pullFromCloud();
     }
-    // Auto-sync when tab gains focus (switching between phone and PC)
     window.addEventListener("focus", () => {
       if (cloudConfig.token) pullFromCloud();
     });
